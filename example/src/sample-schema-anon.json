@@ -1,0 +1,84 @@
+{
+  "$id": "http://schema.here.com/anonymizer.pipeline.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Settings for the anonymizer pipeline",
+  "properties": {
+    "pipeline.config.useCase": {
+      "type": "object",
+      "title": "Use case",
+      "properties": {
+        "type": {
+          "title": "Use case type",
+          "description": "Use case type to be used in anonymization algorithm",
+          "type": "string",
+          "default": "TrafficInformation"
+        },
+        "dataType": {
+          "title": "Type of data",
+          "description": "Data Type of input and output data for anonymization",
+          "default": "NearRealTime",
+          "type": "string"
+        }
+      },
+      "required": ["type", "dataType"]
+    },
+    "pipeline.config.anonymization": {
+      "type": "object",
+      "title": "Anonymization",
+      "properties": {
+        "type": {
+          "title": "Type of anonymization algorithm",
+          "description": "The identifier of anonymization algorithm to use.",
+          "default": "SplitAndGap",
+          "type": "string"
+        },
+        "subTrajectorySize": {
+          "type": "object",
+          "title": "Sub-trajectory Size",
+          "description": "The trajectories are split according to these properties",
+          "properties": {
+            "unit": {
+              "title": "Unit",
+              "description": "Unit of measurement for Sub-trajectory Size. 'seconds' is only supported unit, enum is only a demo",
+              "default": "seconds",
+              "enum": ["seconds", "minutes", "hours"],
+              "type": "string"
+            },
+            "min": {
+              "title": "Min size",
+              "description": "Min size of anonymized trajectories",
+              "type": "integer",
+              "default": 1
+            },
+            "max": {
+              "title": "Max size",
+              "description": "Max size of anonymized trajectories",
+              "type": "integer",
+              "default": 2
+            }
+          },
+          "required": ["min", "max", "unit"]
+        }
+      },
+      "required": ["type", "subTrajectorySize"]
+    }
+  },  
+  "required": [
+    "pipeline.config.useCase"
+  ],
+  "title": "Use case",
+  "type": "object",
+  "ui:schema": { 
+      "ui:order": ["pipeline.config.useCase", "pipeline.config.anonymization"],
+      "pipeline.config.useCase": {
+        "ui:order": ["type", "dataType", "*"]
+      },
+      "pipeline.config.anonymization": {
+          "ui:layout": "tab",
+          "subTrajectorySize" : {
+                "ui:order": ["unit", "min", "max"],
+                "ui:layout": "inline"
+      }
+    }
+  }
+}

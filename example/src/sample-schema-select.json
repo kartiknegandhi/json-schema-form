@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Selects",
+  "description": "Single-select and multi-select with titles example.",
+  "type": "object",
+  "properties": {
+    "string": {
+      "type": "string",
+      "title": "Mandatory string"
+    },
+    "group": {
+      "title": "Single-select",
+      "description": "The type causes warning from $ref, but without it the select disappears",
+      "type": "string",
+      "$ref": "#/definitions/Group",
+      "default": "C"
+    },
+    "multi": {
+      "type": "array",
+      "title": "Multi-select",
+      "description": "Use with care, sometimes this fails validations in more complex forms.",
+      "items": {
+        "$ref": "#/definitions/Group"
+      },
+      "default": ["A", "B"],
+      "uniqueItems": true
+    }
+  },
+  "required": ["string", "group", "multi"],
+  "definitions": {
+    "Group": {
+      "oneOf": [
+        {
+          "const": "A",
+          "title": "Group Alfa"
+        },
+        {
+          "const": "B",
+          "title": "Group Beta"
+        },
+        {
+          "const": "C",
+          "title": "Group Celsius"
+        }
+      ]
+    }
+  }
+}

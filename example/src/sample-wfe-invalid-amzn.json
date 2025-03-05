@@ -1,0 +1,276 @@
+{
+    "$id": "http://schema.here.com/traction.pipeline.schema.json",
+    "type": "object",
+    "title": "WFE_Invalid_Feature Delta Extractor",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+        "": {
+            "$ref": "#/definitions/LoadConfiguration",
+            "title": "Load Configuration"
+        },
+        "plt.batch.write.mode": {
+            "enum": [
+                "patch",
+                "overwrite"
+            ],
+            "type": "string",
+            "title": "Write Mode",
+            "default": "patch",
+            "description": "Write mode: overwrite or patch"
+        },
+        "plt.batch.load.layerIds": {
+            "type": "array",
+            "items": {
+                "enum": [
+                    "topology",
+                    "address",
+                    "building",
+                    "place",
+                    "relation"
+                ],
+                "type": "string"
+            },
+            "title": "LayerIds to process",
+            "default": [
+                "topology"
+            ],
+            "description": "Which layers should be processed",
+            "uniqueItems": true
+        },
+        "spark.default.parallelism": {
+            "type": "number",
+            "title": "Spark Parallelism",
+            "default": 40,
+            "description": "Spark Parallelism = min totalCores * 2"
+        },
+        "plt.batch.statistics.enabled": {
+            "type": "boolean",
+            "title": "Enable general statistics (not map2mapCompare statistics)",
+            "default": false,
+            "description": "Enable general processing statistics (not map2mapCompare statistics)"
+        },
+        "feature.matching.config.dense": {
+            "enum": [
+                "amz",
+                "amz_high_density"
+            ],
+            "type": "string",
+            "title": "Dense tile matching configuration",
+            "default": "amz_high_density",
+            "description": "Configuration to use for tiles with feature count over threshold"
+        },
+        "feature.matching.config.default": {
+            "enum": [
+                "amz",
+                "amz_high_density"
+            ],
+            "type": "string",
+            "title": "Default matching configuration",
+            "default": "amz",
+            "description": "Configuration to use tiles with lower feature counts"
+        },
+        "plt.batch.load.contextLoaderType": {
+            "type": "string",
+            "title": "Context Loader Type",
+            "default": "wholetile",
+            "description": "Which context loader type to use"
+        },
+        "feature.matching.config.threshold": {
+            "type": "number",
+            "title": "Dense tile feature count threshold",
+            "default": 5000,
+            "description": "Threshold number of features in tile to use 'dense' configuration"
+        },
+        "feature.matching.processing.partialMatch": {
+            "type": "boolean",
+            "title": "Partial matched feature processing include",
+            "default": false,
+            "description": "Includes the check for incomplete or fragmented features"
+        },
+        "feature.matching.processing.highConfidence": {
+            "type": "boolean",
+            "title": "High confidence matched feature processing include",
+            "default": true,
+            "description": "Includes the processing of high confidence matched features"
+        },
+        "plt.batch.load.{input-catalog}.isTileSource": {
+            "type": "boolean",
+            "title": "input-catalog-isTileSource",
+            "default": true,
+            "description": "input-catalog-isTileSource"
+        },
+        "plt.batch.load.{context-catalog}.isTileSource": {
+            "type": "boolean",
+            "title": "context-catalog-isTileSource",
+            "default": true,
+            "description": "context-catalog-isTileSource"
+        }
+    },
+    "definitions": {
+        "LoadConfiguration": {
+            "type": "object",
+            "title": "LoadConfiguration",
+            "required": [
+                "plt.batch.load.catalog.type",
+                "plt.batch.context.catalog.type"
+            ],
+            "properties": {
+                "plt.batch.load.catalog.type": {
+                    "enum": [
+                        "versioned",
+                        "interactive"
+                    ],
+                    "type": "string",
+                    "title": "Input Catalog Type (V0)",
+                    "default": "interactive",
+                    "description": "Input Catalog Type (V0)"
+                },
+                "plt.batch.context.catalog.type": {
+                    "enum": [
+                        "versioned",
+                        "interactive"
+                    ],
+                    "type": "string",
+                    "title": "Context Catalog Type (V2)",
+                    "default": "interactive",
+                    "description": "Context Catalog Type (V2)"
+                }
+            },
+            "dependencies": {
+                "plt.batch.load.catalog.type": {
+                    "oneOf": [
+                        {
+                            "properties": {
+                                "plt.batch.load.tile.type": {
+                                    "enum": [
+                                        "here"
+                                    ],
+                                    "type": "string",
+                                    "title": "VML: Tile Type",
+                                    "default": "here",
+                                    "description": "Versioned Tile Type"
+                                },
+                                "plt.batch.load.partitions": {
+                                    "type": "string",
+                                    "title": "VML: Tiles to process",
+                                    "default": "",
+                                    "description": "Comma separated list of tiles to be processed; leave empty for all tiles. E.g.: 23600840"
+                                },
+                                "plt.batch.load.catalog.type": {
+                                    "enum": [
+                                        "versioned"
+                                    ]
+                                },
+                                "plt.batch.load.enableSameVMLCatalogVersionSetting": {
+                                    "type": "boolean",
+                                    "title": "VML: Enable same VML Catalog Version Setting",
+                                    "default": true,
+                                    "description": "If set true allows to compare different versions of same VML catalog (e.g. HERE 2401 vs. HERE 24.03)"
+                                },
+                                "pipeline.job.catalog-versions.input-catalogs.input-catalog.version": {
+                                    "type": "integer",
+                                    "title": "VML: Input Catalog Version to process",
+                                    "default": 0,
+                                    "description": "Input Catalog Version to process"
+                                },
+                                "pipeline.job.catalog-versions.input-catalogs.context-catalog.version": {
+                                    "type": "integer",
+                                    "title": "VML: Context Catalog Version to process",
+                                    "default": 0,
+                                    "description": "Context Catalog Version to process"
+                                },
+                                "pipeline.job.catalog-versions.input-catalogs.input-catalog.read-mode": {
+                                    "enum": [
+                                        "all",
+                                        "changes"
+                                    ],
+                                    "type": "string",
+                                    "title": "VML: Input Catalog Read Mode",
+                                    "default": "all",
+                                    "description": "Input catalog read mode for VML layer"
+                                }
+                            }
+                        },
+                        {
+                            "required": [
+                                "plt.batch.load.input-catalog.imlContext",
+                                "plt.batch.load.context-catalog.imlContext"
+                            ],
+                            "properties": {
+                                "plt.batch.load.strategy": {
+                                    "enum": [
+                                        "n/a",
+                                        "dynamic.quadtree",
+                                        "fixed.quadtree",
+                                        "stored.quadtree",
+                                        "query.chunk"
+                                    ],
+                                    "type": "string",
+                                    "title": "IML: Load Strategy",
+                                    "default": "n/a",
+                                    "description": "IML load strategy. E.g.: dynamic.quadtree, fixed.quadtree, stored.quadtree, query.chunk, n/a (or empty)"
+                                },
+                                "plt.batch.load.filter.bbox": {
+                                    "type": "string",
+                                    "title": "IML: BBox",
+                                    "default": "",
+                                    "description": "IML load bbox filter. E.g.: -34.346901,-35.562457,149.992891,148.064790,14"
+                                },
+                                "plt.batch.load.catalog.type": {
+                                    "enum": [
+                                        "interactive"
+                                    ]
+                                },
+                                "plt.batch.load.quadtree.impl": {
+                                    "enum": [
+                                        "fixed",
+                                        "dynamic"
+                                    ],
+                                    "type": "string",
+                                    "title": "IML: Quadtree implementation",
+                                    "default": "fixed",
+                                    "description": "IML Load Quadtree implementation"
+                                },
+                                "plt.batch.load.filter.quadkeys": {
+                                    "type": "string",
+                                    "title": "IML: Quad Keys",
+                                    "default": "",
+                                    "description": "IML: Enter quad keys (aka tile-ids), separated by comma, to restrict the geographic area for processing. Example: 31123030230201"
+                                },
+                                "plt.batch.load.input-catalog.imlContext": {
+                                    "enum": [
+                                        "delta",
+                                        "base",
+                                        "combined"
+                                    ],
+                                    "type": "string",
+                                    "title": "IML Context: Input Features",
+                                    "default": "base",
+                                    "description": "Which iml context to used when loading input features."
+                                },
+                                "plt.batch.load.context-catalog.imlContext": {
+                                    "enum": [
+                                        "delta",
+                                        "base",
+                                        "combined"
+                                    ],
+                                    "type": "string",
+                                    "title": "IML Context: Context Features",
+                                    "default": "base",
+                                    "description": "Which iml context to used when loading context features."
+                                },
+                                "plt.batch.load.quadtree.fixed.targetZoomLevel": {
+                                    "type": "integer",
+                                    "title": "IML: Tile Level",
+                                    "default": 12,
+                                    "description": "Enter custom IML fixed tile level. E.g.: 14"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "description": "WFE_Invalid_Feature Delta Extractor"
+  }

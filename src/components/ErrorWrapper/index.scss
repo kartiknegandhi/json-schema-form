@@ -1,0 +1,41 @@
+.errorTooltip {
+  padding-left: 12px;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 0px;
+  list-style: none;
+  li {
+    padding: 0px !important;
+    margin: 0px !important;
+    &::before {
+      content: "\2022"; /* Add content: \2022 is the CSS Code/unicode for a bullet */
+      color: #5659f4;
+      font-weight: bold;
+      display: inline-block;
+      width: 12px;
+    }
+
+    // styles for input tooltip
+    .point {
+      position: absolute;
+      display: inline-block;
+      -webkit-border-radius: 50%;
+      border-radius: 50%;
+      height: 0.5rem;
+      width: 0.5rem;
+      color: #ffffff;
+      transform: translate(-200%, 50%);
+    }
+    .list {
+      padding-left: 0.75rem;
+    }
+    .danger {
+      background: #ffffff;
+    }
+    .danger-text {
+      color: #ffffff;
+    }
+  }
+}

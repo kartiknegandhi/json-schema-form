@@ -1,0 +1,23 @@
+{"data":{
+    "plt.batch.write.mode": "patch",
+    "plt.batch.load.layerIds": [
+        "address",
+        "place"
+    ],
+    "spark.default.parallelism": 40,
+    "plt.batch.statistics.enabled": false,
+    "feature.matching.config.dense": "3rd_party_data",
+    "feature.matching.config.default": "3rd_party_data",
+    "plt.batch.load.contextLoaderType": "wholetile",
+    "feature.matching.config.threshold": 5000,
+    "plt.batch.load.{input-catalog}.isTileSource": true,
+    "plt.batch.load.{context-catalog}.isTileSource": true,
+    "": {
+        "plt.batch.load.catalog.type": "interactive",
+        "plt.batch.context.catalog.type": "interactive"
+    },
+    "feature.matching.processing.partialMatch": false,
+    "feature.matching.processing.highConfidence": true
+},
+"errors":{}
+}

@@ -1,0 +1,51 @@
+.App {
+  width: 100%;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.Editor {
+  float: left;
+  width: 50%;
+  margin: 4px;
+}
+.Editor textarea {
+  display: block;
+  width: 100%;
+  white-space: pre;
+}
+.ModeSelect {
+  padding-bottom: 4px;
+}
+.ExampleSelect {
+  padding-bottom: 4px;
+}
+.ExampleSelect select {
+  width: 20em;
+}
+.ExampleSelect #submit {
+  margin-left: 8px;
+}
+.Data textarea {
+  display: block;
+  width: 100%;
+  white-space: pre;
+}
+.EditorError {
+  color: red;
+  font-weight: bold;
+}
+.Form {
+  float: right;
+  width: 40%;
+  border-style: solid;
+  vertical-align: top;
+  margin: 4px;
+  padding-bottom: 64px;
+}
+
+.Logging {
+  padding: 8px;
+}

@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Demo",
+  "description": "Basic JSON schema example",
+  "properties": {
+    "tiler.inPrefix": {
+      "description": "Key prefix in the input layer can be used to test with just a few tiles",
+      "title": "Prefix for input keys",
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9/._-]+$"
+    },
+    "tiler.outPrefix": {
+      "description": "Key prefix in the output layer",
+      "title": "Prefix for output keys",
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9/._-]+$",
+      "minLength": 3
+    },
+    "tiler.size": {
+      "description": "Target maximum size of a partition in the output. If a tile is larger, it's features are split to child tiles until tile size is smaller, or maximum tile level is reached.",
+      "title": "Maximum tile size",
+      "type": "integer",
+      "default": 4194304,
+      "minimum": 10240,
+      "maximum": 20480000
+    },
+    "tiler.statistics": {
+      "description": "Generate coverage statistics if true",
+      "title": "Generate statistics?",
+      "type": "boolean",
+      "default": true
+    },
+    "tiler.extra": {
+      "description": "Extra configuration which becomes a multi-line due to maxLength>100.",
+      "title": "Extra info",
+      "type": "string",
+      "maxLength": 8192
+    },
+    "tiler.single": {
+      "type": "string",
+      "title": "Single-select from names",
+      "enum": ["Alpha", "Beta", "Gamma"],
+      "default": "Beta"
+    },
+    "tiler.multi": {
+      "type": "array",
+      "title": "Multi-select from group enum",
+      "description": "Multi-select from group names",
+      "items": {
+        "type": "string",
+        "enum": ["Group AX", "Group BX", "Group CX"]
+      },
+      "default": ["Group BX"],
+      "uniqueItems": true
+    }
+  },
+  "required": ["tiler.outPrefix", "tiler.size"],
+  "type": "object"
+}

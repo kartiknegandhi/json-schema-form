@@ -1,0 +1,70 @@
+{
+  "name": "example",
+  "version": "0.1.1",
+  "private": true,
+  "homepage": "./",
+  "dependencies": {
+    "@here/hds-iconlibrary": "^2024.5.9",
+    "@here/hds-react-components": "^2024.5.9",
+    "@here/hds-themes": "^2024.5.9",
+    "@here/json-schema-form": "^0.1.0-alpha.49",
+    "@rjsf/core": "^5.18.4",
+    "@rjsf/utils": "^5.18.4",
+    "react": "^17.0.2",
+    "react-app-rewired": "^2.2.1",
+    "react-dom": "^17.0.2",
+    "react-scripts": "^5.0.0",
+    "react-select": "^5.7.3",
+    "sass": "^1.49.8",
+    "typescript": "^4.4.2",
+    "web-vitals": "^2.1.0"
+  },
+  "overrides": {
+    "loader-utils": "^2.0.4",
+    "minimatch": "^3.0.5",
+    "json5": "^2.2.2",
+    "nth-check": "^2.0.1"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "jest --env=jest-environment-jsdom --runInBand",
+    "eject": "react-app-rewired eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^12.1.5",
+    "@testing-library/user-event": "^14.2.1",
+    "@types/jest": "^28.1.2",
+    "@types/node": "^18.0.0",
+    "@types/react": "^17.0.47",
+    "@types/react-dom": "^18.3.0",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "jest": "^28.1.1",
+    "jest-environment-jsdom": "^28.1.1",
+    "process": "^0.11.10",
+    "stream-browserify": "^3.0.0",
+    "ts-jest": "^28.0.5",
+    "vm-browserify": "^1.1.2"
+  }
+}

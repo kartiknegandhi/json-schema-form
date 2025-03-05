@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "General",
+  "description": "UI Schema example shows advanced customization options",
+  "definitions": {
+    "Prefix": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "ID prefix",
+          "examples": ["here:cm"],
+          "pattern": "^[a-z0-9:-]+$"
+        },
+        "hrn": {
+          "type": "string",
+          "title": "Catalog HRN",
+          "pattern": "^hrn:[a-z0-9-]+:data::[a-z0-9-]+:[a-z0-9-]+$"
+        }
+      },
+      "required": ["id", "hrn"]
+    }
+  },
+  "properties": {
+    "tiler.inPrefix": {
+      "description": "Key prefix in the input layer can be used to test with just a few tiles",
+      "title": "Prefix for input keys",
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9/._-]+$"
+    },
+    "tiler.outPrefix": {
+      "description": "Key prefix in the output layer",
+      "title": "Prefix for output keys",
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9/._-]+$",
+      "minLength": 3
+    },
+    "tiler.levels": {
+      "type": "object",
+      "title": "Tile levels",
+      "required": ["min", "max"],
+      "properties": {
+        "step": {
+          "title": "Step",
+          "type": "integer",
+          "default": 1
+        },
+        "max": {
+          "description": "Maximum tile level in the output",
+          "title": "Maximum",
+          "type": "integer",
+          "default": 14
+        },
+        "min": {
+          "description": "Minimum tile level in the output",
+          "title": "Minimum",
+          "type": "integer",
+          "default": 10
+        }
+      }
+    },
+    "tiler.extra": {
+      "description": "Extra configuration which becomes a 10 line text area due to ui:schema.",
+      "title": "Extra info",
+      "type": "string"
+    },
+    "advanced": {
+      "type": "object",
+      "title": "Advanced",
+      "description": "Advanced configuration options in a separate tab",
+      "properties": {
+        "threads": {
+          "type": "integer",
+          "title": "Number of Threads",
+          "default": 16
+        },
+        "prefixArray": {
+          "type": "array",
+          "title": "Prefixes",
+          "description": "This is an array of Prefix objects",
+          "items": {
+            "$ref": "#/definitions/Prefix"
+          }
+        }
+      }
+    }
+  },
+  "required": ["tiler.outPrefix"],
+  "type": "object",
+  "ui:schema": {
+    "ui:order": ["tiler.outPrefix", "*"],
+    "tiler.outPrefix": {
+      "ui:placeholder": "This is a placeholder for a field which is hidden after create",
+      "ui:update": "hidden",
+      "ui:view": "hidden"
+    },
+    "tiler.levels": {
+      "ui:order": ["min", "max", "step"],
+      "ui:layout": "inline"
+    },
+    "tiler.extra": {
+      "ui:placeholder": "Text area with 10 rows defined in ui:schema.\nThis field will be disabled in update.",
+      "ui:widget": "textarea",
+      "ui:options": {
+        "rows": 10
+      },
+      "ui:update": "disabled"
+    },
+    "advanced": {
+      "ui:layout": "tab",
+      "prefixArray": {
+        "items": {
+          "hrn": {
+            "ui:widget": "hrnSelect"
+          }
+        }
+      }
+    }
+  }
+}

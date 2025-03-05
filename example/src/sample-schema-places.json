@@ -1,0 +1,206 @@
+{
+  "schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Search customization configuration",
+  "type": "object",
+  "description": "the configuration parameters available / required for search-customizations",
+  "documentationUrl": "https://developer.here.com/documentation/geocoding-search-api/dev_guide/topics/byod.html",
+  "properties": {
+    "datasets": {
+      "title": "Dataset(s) configuration",
+      "description": "A `dataset` is a resource you can insert, update, delete Places content to, and query that data using HERE Search APIs.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "title": "Dataset configuration",
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Dataset id",
+            "description": "The unique identifier of a dataset",
+            "type": "string",
+            "pattern": "^[a-z0-9](-|[a-z0-9])*[a-z0-9]$",
+            "minLength": 4,
+            "maxLength": 32
+          },
+          "name": {
+            "title": "Dataset display name",
+            "description": "The name of a dataset",
+            "type": "string"
+          },
+          "description": {
+            "title": "Dataset description",
+            "description": "Description for the dataset in the Markdown format.",
+            "type": "string",
+            "maxLength": 1000,
+            "contentMediaType": "text/markdown"
+          },
+          "enrichAddress": {
+            "title": "Enable multilingual address attribute names enrichment",
+            "description": "Use HERE Geocoding & Search services based on HERE Map Content to enrich the following address element name fields:\n  * subdistrictNames\n  * districtNames\n  * cityNames\n  * countyNames\n  * stateCode\n  * stateNames\n  * countryCode\n  * countryNames\n\nfor every ingested feature using its provided geoposition. This feature incurs one additional Reverse Geocoding transaction per ingested POI\n",
+            "type": "boolean",
+            "default": false
+          },
+          "opsProfile": {
+            "title": "Dataset Operational profile",
+            "description": "Dataset operational profile influencing resource allocation isolation, availability and costs",
+            "type": "object",
+            "properties": {
+              "type": {
+                "title": "Profile type",
+                "description": "Enum identifier for a configuration profile affecting performance and costs incurred for this dataset",
+                "type": "string",
+                "enum": ["small", "medium"],
+                "default": "small"
+              }
+            },
+            "required": ["type"]
+          }
+        },
+        "required": ["id", "opsProfile"]
+      }
+    },
+    "views": {
+      "title": "View(s) configuration",
+      "type": "array",
+      "items": {
+        "title": "View configuration",
+        "description": "A `view` is a resource that consists of a set of resource-dependencies along with a set of `filter`s and/or `negativeFilter`s to be applied to those resources. A view may not be written to. A view's HERE Resource Name (HRN) may be used in the datasets query parameter on HERE Search APIs.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "View id",
+            "description": "The unique identifier of a view.",
+            "type": "string",
+            "pattern": "^[a-z0-9](-|[a-z0-9])*[a-z0-9]$",
+            "minLength": 4,
+            "maxLength": 32
+          },
+          "name": {
+            "title": "View display name",
+            "description": "The name of a view.",
+            "type": "string"
+          },
+          "description": {
+            "title": "View description",
+            "description": "Description for the view in the Markdown format.",
+            "type": "string",
+            "maxLength": 1000,
+            "contentMediaType": "text/markdown"
+          },
+          "dependencies": {
+            "title": "View resource dependencies",
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "title": "View dependency configuration",
+              "description": "A view `dependency` defines a set of dataset resources and optionally filters and/or negative-filters to apply on those resources affecting retrieval for search requests.",
+              "type": "object",
+              "properties": {
+                "resources": {
+                  "title": "Dataset resources",
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "description": "Dataset identification configuration",
+                    "type": "object",
+                    "properties": {
+                      "hrn": {
+                        "title": "Customization HRN containing dataset",
+                        "description": "The unique HRN identifier of a search customization. If not specified, assumed to be the HRN of the containing customization.",
+                        "type": "string",
+                        "pattern": "^hrn:[a-z0-9][a-z0-9-_\\.]*[a-z0-9]:search:(:|[a-z0-9][a-z0-9-_\\.]*[a-z0-9])*:[a-z0-9][a-z0-9-_\\.]*[a-z0-9]:[a-z0-9][a-z0-9-_\\.]*[a-z0-9]$"
+                      },
+                      "id": {
+                        "title": "Dataset id of this dependended-on resource",
+                        "description": "The unique identifier of a dataset in the search customization.",
+                        "type": "string",
+                        "pattern": "^[a-z0-9](-|[a-z0-9])*[a-z0-9]$",
+                        "minLength": 4,
+                        "maxLength": 32
+                      }
+                    },
+                    "required": ["id"]
+                  }
+                },
+                "filters": {
+                  "title": "Filters for this dependency",
+                  "description": "Defines list of positive filters on the provided resources. Each filter item individually MUST match for the list of filters to be considered a match",
+                  "type": "array",
+                  "items": {
+                    "title": "Filter definition",
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "title": "Type of filter clause",
+                        "description": "Enum type identifier for a filter.<br />Possible values:<br />`knownFieldTermString`: Filtering based on string terms matched in the specified field.",
+                        "type": "string",
+                        "enum": ["knownFieldTermString"],
+                        "default": "knownFieldTermString"
+                      },
+                      "field": {
+                        "title": "Filter field specification",
+                        "description": "Logical field in which to filter provided terms\nPossible terms:\n* categories: https://developer.here.com/documentation/geocoding-search-api/dev_guide/topics-places/places-category-system-full.html\n* chains: https://developer.here.com/documentation/geocoding-search-api/dev_guide/topics-places/places-chain-system-full.html\n* foodTypes: https://developer.here.com/documentation/geocoding-search-api/dev_guide/topics-places/food-types-category-system-full.html\n",
+                        "type": "string",
+                        "enum": ["categories", "chains", "foodTypes"]
+                      },
+                      "terms": {
+                        "title": "Terms to filter on",
+                        "description": "List of terms, at least one of which MUST match",
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": ["field", "terms", "type"]
+                  }
+                },
+                "negativeFilters": {
+                  "title": "Negative filters for this dependency",
+                  "description": "Defines list of negative filters on the provided resources. Each filter item individually MUST NOT match for the list of filters to be considered a match",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "title": "Type of filter clause",
+                        "description": "Enum type identifier for a filter.<br />Possible values:<br />`knownFieldTermString`: Filtering based on string terms matched in the specified field.",
+                        "type": "string",
+                        "enum": ["knownFieldTermString"],
+                        "default": "knownFieldTermString"
+                      },
+                      "field": {
+                        "title": "Filter field specification",
+                        "description": "Logical field in which to filter provided terms\nPossible terms:\n* categories: https://developer.here.com/documentation/geocoding-search-api/dev_guide/topics-places/places-category-system-full.html\n* chains: https://developer.here.com/documentation/geocoding-search-api/dev_guide/topics-places/places-chain-system-full.html\n* foodTypes: https://developer.here.com/documentation/geocoding-search-api/dev_guide/topics-places/food-types-category-system-full.html\n",
+                        "type": "string",
+                        "enum": ["categories", "chains", "foodTypes"]
+                      },
+                      "terms": {
+                        "title": "Terms to filter on",
+                        "description": "List of terms, at least one of which MUST match",
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": ["field", "terms", "type"]
+                  }
+                }
+              },
+              "required": ["resources"]
+            }
+          }
+        },
+        "required": ["id", "dependencies"]
+      }
+    }
+  },
+  "ui:schema": {
+    "views": {
+      "ui:layout": "tab"
+    }
+  }
+}

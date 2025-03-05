@@ -1,0 +1,112 @@
+.labelContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+[class$="-ValueContainer"] {
+  color: var(--hds-foreground-primary);
+  font: var(--hds-body-small-font);
+  padding: 0 0 0 var(--hds-spacing-4) !important;
+  // background: red;
+}
+
+[class$="-Input"] {
+  margin-bottom: var(--hds-spacing-2) !important;
+  // background: red;
+}
+
+.rjsf {
+  text-align: left;
+  //   padding-right: var(--hds-spacing-4);
+}
+
+.prop {
+  //   padding-bottom: var(--hds-spacing-6);
+}
+.form-control {
+  width: 100%;
+}
+
+.text-danger {
+  color: var(--hds-negative);
+}
+
+.array-item {
+  display: block;
+}
+.array-item-buttons {
+  display: block;
+}
+
+.array-add-button {
+  color: var(--hds-foreground-color);
+  font: var(--hds-body-small-font);
+  margin-bottom: var(--hds-spacing-1);
+  overflow: inherit;
+  text-overflow: inherit;
+  white-space: inherit;
+}
+
+.label-primary {
+  color: var(--hds-foreground-color);
+  font: var(--hds-body-small-font);
+  margin-bottom: var(--hds-spacing-1);
+  overflow: inherit;
+  text-overflow: inherit;
+  white-space: inherit;
+}
+.label-info {
+  float: right;
+}
+.label-optional {
+  font-size: small;
+}
+.info-icon {
+  display: inline-block;
+  padding-left: var(--hds-spacing-2);
+}
+
+// .object {
+//   margin-left: var(--hds-spacing-4);
+// }
+
+.inline-object .prop {
+  display: inline-block;
+  margin-left: var(--hds-spacing-4);
+}
+
+.inline-object .field-integer {
+  width: 10em;
+}
+
+// HACK to workaround HDS select min-width issue until HDS is fixed
+.inline-object .css-1p7i3tm-container {
+  min-width: 10em;
+}
+
+.field-array .field-object {
+  padding: var(--hds-spacing-2);
+}
+.array-item {
+  margin-left: var(--hds-spacing-2);
+}
+.array-item .object {
+  margin-left: 0px;
+}
+
+.array-item-buttons {
+  margin-left: var(--hds-spacing-4);
+  margin-bottom: var(--hds-spacing-2);
+}
+.array-add-button {
+  margin-left: var(--hds-spacing-4);
+  margin-bottom: var(--hds-spacing-2);
+}
+
+.HDSForm_IconButton {
+  margin-right: var(--hds-spacing-2);
+}
+
+.gray-700 {
+  color: var(--hds-gray-700);
+}

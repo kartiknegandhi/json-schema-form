@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Objects and Arrays",
+  "description": "Arrays and objects example",
+  "definitions": {
+    "Prefix": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "Resource ID",
+          "examples": ["here:cm"],
+          "pattern": "^[a-z0-9:-]+$"
+        },
+        "hrn": {
+          "type": "string",
+          "title": "Resource HRN",
+          "pattern": "^hrn:[a-z0-9-]+:[a-z0-9-]+::[a-z0-9-]+:[a-z0-9-]+$",
+          "default": "hrn:here:data::olp-here:"
+        }
+      },
+      "required": ["id", "hrn"]
+    }
+  },
+  "properties": {
+    "levels": {
+      "type": "object",
+      "title": "Tile levels",
+      "required": ["min", "max"],
+      "properties": {
+        "min": {
+          "description": "Minimum tile level in the output",
+          "title": "Minimum",
+          "type": "integer",
+          "default": 10
+        },
+        "max": {
+          "description": "Maximum tile level in the output",
+          "title": "Maximum",
+          "type": "integer",
+          "default": 14
+        },
+        "step": {
+          "title": "Step",
+          "type": "integer",
+          "default": 1
+        }
+      }
+    },
+    "stringArray": {
+      "type": "array",
+      "title": "Strings",
+      "description": "This is an array of 1-3 strings",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": {
+        "type": "string"
+      },
+      "default": ["one", "two"]
+    },
+    "prefixArray": {
+      "type": "array",
+      "title": "Prefixes",
+      "description": "This is an array of Prefix objects",
+      "items": {
+        "$ref": "#/definitions/Prefix"
+      }
+    }
+  },
+  "required": ["levels", "stringArray"],
+  "type": "object"
+}

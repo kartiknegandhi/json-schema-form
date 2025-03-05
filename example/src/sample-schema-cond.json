@@ -1,0 +1,89 @@
+{
+  "$id": "http://schema.here.com/versioned.geojson.pipeline.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Conditional example",
+  "definitions": {
+    "Conditional": {
+      "title": "Data size",
+      "type": "object",
+      "properties": {
+        "featureCount": {
+          "type": "string",
+          "title": "How many features in input data?",
+          "enum": [
+            "<100",
+            "<10000",
+            "Millions"
+          ],
+          "default": "<100"
+        }
+      },
+      "required": [
+        "featureCount"
+      ],
+      "dependencies": {
+        "featureCount": {
+          "oneOf": [
+            {
+              "properties": {
+                "featureCount": {
+                  "enum": [
+                    "<100"
+                  ]
+                }
+              }
+            },
+            {
+              "properties": {
+                "featureCount": {
+                  "enum": [
+                    "<10000"
+                  ]
+                },
+                "Partitions": {
+                  "type": "number",
+                  "minimum": 16,
+                  "default": 16
+                }
+              },
+              "required": [
+                "Partitions"
+              ]
+            },
+            {
+              "properties": {
+                "featureCount": {
+                  "enum": [
+                    "Millions"
+                  ]
+                },
+                "Partitions": {
+                  "type": "number",
+                  "minimum": 256
+                },
+                "size": {
+                  "title": "Average feature size",
+                  "type": "number",
+                  "default": 512000
+                }
+              },
+              "required": [
+                "size", "Partitions"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "properties": {
+    "name": {
+      "type":"string",
+      "title": "Name of the feature set"
+    },
+    "tiler.conditional": {
+      "title": "Optional parameters",
+      "$ref": "#/definitions/Conditional"
+    }
+  }
+}
